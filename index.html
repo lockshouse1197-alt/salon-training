@@ -1,0 +1,664 @@
+<!doctype html><html lang="th"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Salon Training</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
+<style>:root{--bg:#f5f4f2;--ink:#1f1a1c;--mut:#6b6266;--rose:#8f2d47;--rose2:#f0e3e7;--ok:#2f7d5b;--line:#e8dde0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Prompt","Noto Sans Thai",system-ui,sans-serif;line-height:1.5}
+main{max-width:900px;margin:0 auto;padding:16px 14px 90px}
+h1,h2,h3{margin:.2em 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;margin:0 0 12px}
+.prof{display:flex;gap:14px;align-items:center}
+.avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;flex:none;background:var(--rose2)}
+.ph{display:grid;place-items:center;background:var(--rose2);font-size:28px}
+.btn{background:var(--rose);color:#fff;border:0;border-radius:10px;padding:12px 18px;font:inherit;font-weight:600;cursor:pointer}
+.btn.sec{background:var(--rose2);color:var(--rose)}.btn:disabled{opacity:.5}
+.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,nav button:focus-visible{outline:3px solid #e49aac;outline-offset:2px}
+input,select,textarea{width:100%;padding:11px;margin:4px 0 10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+label{font-size:.9rem;color:var(--mut)}
+.bar{position:relative;background:var(--rose2);border-radius:99px;height:20px;overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--rose)}
+.bar span{position:relative;font-size:.75rem;padding-left:8px;color:#222}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.work{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:var(--rose2)}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}
+.tag{border-radius:99px;padding:2px 10px;font-size:.8rem;background:var(--rose2);color:var(--rose);white-space:nowrap}
+.tag.ok{background:#dff1e8;color:var(--ok)}
+.err{color:#b3261e}.mut{color:var(--mut)}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;overflow-x:auto;background:#fff;border-top:1px solid var(--line);padding:6px}
+nav button{flex:1 0 64px;border:0;background:none;font:inherit;font-size:.85rem;color:var(--mut);padding:10px 6px;border-radius:10px;cursor:pointer}
+nav button b{display:block;font-size:1.3rem}
+nav button.on{color:var(--rose);background:var(--rose2)}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#fff;border-bottom:1px solid var(--line)}
+.login{min-height:100vh;display:grid;place-items:center;padding:16px}.login .card{width:100%;max-width:360px}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+@media(min-width:700px){nav{position:sticky;top:0;bottom:auto;justify-content:center;border:0;border-bottom:1px solid var(--line)}main{padding-bottom:30px}}
+
+.hero{background:linear-gradient(135deg,#7a2238,#b4546e);color:#fff;border:0}.hero .mut{color:#f6dfe5}.hero .tag{background:rgba(255,255,255,.2);color:#fff}.hero .avatar{border:3px solid rgba(255,255,255,.6)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:0 0 12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}.stat b{display:block;font-size:1.5rem;color:var(--rose)}.stat span{font-size:.8rem;color:var(--mut)}
+.steps{margin:8px 0 0 8px;border-left:2px solid var(--line);padding-left:22px}.step{position:relative;padding:0 0 16px}
+.step::before{content:"";position:absolute;left:-30px;top:5px;width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid var(--line)}
+.step.done::before{background:var(--ok);border-color:var(--ok)}.step.cur::before{background:var(--rose);border-color:var(--rose);box-shadow:0 0 0 4px var(--rose2)}
+.slide{min-height:200px;background:linear-gradient(180deg,#fff,#faf1f4);border:1px solid var(--line);border-radius:12px;padding:20px;margin:10px 0}
+.slide h3{color:var(--rose);font-size:1.3rem;margin-bottom:10px}.slide img{max-width:100%;border-radius:10px}
+.slide .li{margin:8px 0;padding-left:20px;position:relative}.slide .li::before{content:"";position:absolute;left:4px;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--rose)}
+.frame{width:100%;aspect-ratio:16/9;border:0;border-radius:10px}
+.opt{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:10px;margin:6px 0;cursor:pointer;color:var(--ink);font-size:1rem}.opt input{width:auto;margin:4px 0}
+.tabs{flex-wrap:wrap}
+</style></head><body><div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const {useState, useEffect, useCallback} = React;
+const getGas = () => { try { return localStorage.getItem('gas') || ''; } catch { return ''; } };
+
+async function api(action, data = {}) {
+  const GAS = getGas();
+  if (!GAS) throw new Error('ยังไม่ได้ตั้งค่า VITE_GAS_URL ');
+  let res;
+  try {
+    res = await fetch(GAS, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'}, // หลีกเลี่ยง CORS preflight
+      body: JSON.stringify({action, token: sessionStorage.getItem('tk'), ...data}),
+    });
+  } catch { throw new Error('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่'); }
+  let j;
+  try { j = await res.json(); } catch { throw new Error('เซิร์ฟเวอร์ตอบกลับผิดรูปแบบ ตรวจสอบการ Deploy Apps Script'); }
+  if (!j.ok) throw new Error(j.error || 'เกิดข้อผิดพลาด');
+  return j.data;
+}
+
+// ย่อรูปก่อนอัปโหลดให้เร็วและไม่เกินขนาดที่ Apps Script รับได้
+function resize(file, max = 1000) {
+  return new Promise((ok, bad) => {
+    const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(u);
+      ok(c.toDataURL('image/jpeg', 0.8).split(',')[1]);
+    };
+    img.onerror = () => bad(new Error('ไฟล์รูปไม่ถูกต้อง'));
+    img.src = u;
+  });
+}
+
+async function uploadFile(file) {
+  if (!file.type.startsWith('image/')) throw new Error('รองรับเฉพาะไฟล์รูปภาพ');
+  return api('upload', {data: await resize(file), mimeType: 'image/jpeg'});
+}
+
+
+const LEVELS = ['Trainee', 'Assistant', 'Senior Assistant', 'Junior Stylist', 'Stylist / Designer', 'Senior Stylist', 'Top / Master Stylist'];
+const STATUS = ['ยังไม่ผ่าน', 'รอสอบ', 'ผ่าน'];
+const KPI_SPEC = { // ตามไฟล์ KPI: [รหัสข้อ, ตัวชี้วัด, คะแนนเต็ม]
+  assistant: {name: 'ผู้ช่วยช่าง', groups: [
+    ['หมวด 1 คุณภาพงานบริการและทักษะตามตำแหน่ง (40)', [['1.1', 'งานสระ-นวดสะอาดผ่อนคลาย ลูกค้าพึงพอใจ', 15], ['1.2', 'การเป่าแห้ง ไดร์จัดทรงเรียบร้อยเงางาม', 15], ['1.3', 'การลงเคมีและช่วยงานละเอียด งานไม่พลาด', 10]]],
+    ['หมวด 2 ความเร็วและการซัพพอร์ตช่าง (25)', [['2.1', 'เตรียมอุปกรณ์ไว รู้ใจช่าง ไม่ปล่อยให้รอ', 15], ['2.2', 'บริหารเวลาในแต่ละขั้นตอนได้ตามมาตรฐาน', 10]]],
+    ['หมวด 3 ความสะอาดและการดูแลสต็อก/อุปกรณ์ (15)', [['3.1', 'รักษาความสะอาดสเตชัน ล้างอุปกรณ์หลังใช้ทันที', 10], ['3.2', 'ชั่งตวงและใช้น้ำยา/เคมีคุ้มค่า ไม่ทำหกเสียหาย', 5]]],
+    ['หมวด 4 วินัยและทัศนคติ (20)', [['4.1', 'ความตรงต่อเวลา การเข้างาน ไม่ขาดลามาสาย', 10], ['4.2', 'แต่งกายสะอาดสุภาพ ยิ้มแย้ม ทำงานเป็นทีม', 10]]]]},
+  stylist: {name: 'ช่างทำผม', groups: [
+    ['หมวด 1 ยอดขายงานบริการ (30)', [['1.1', 'ยอดขายบริการเทียบเป้า (ยอดจริง ÷ เป้า × 30)', 30]]],
+    ['หมวด 2 คุณภาพงานและความพึงพอใจลูกค้า (25)', [['2.1', 'อัตรางานแก้ (ต่ำกว่า 2%) และความปลอดภัยเคมี', 15], ['2.2', 'คะแนนความพึงพอใจและรีวิว (เฉลี่ย 4.8 ดาวขึ้นไป)', 10]]],
+    ['หมวด 3 การรักษาลูกค้าเก่าและยอดจองระบุตัว (20)', [['3.1', 'Retention Rate (เป้า ≥ 45% สำหรับ Stylist)', 10], ['3.2', 'Request Rate (เป้า ≥ 35% ของคิวทั้งหมด)', 10]]],
+    ['หมวด 4 ยอดขายเสริมและผลิตภัณฑ์ (15)', [['4.1', 'ขายทรีตเมนต์บำรุงและเคมีเสริม (≥ 30% ของเคส)', 10], ['4.2', 'ยอดขายผลิตภัณฑ์ดูแลเส้นผมกลับบ้าน (เป้า 20,000 บ.)', 5]]],
+    ['หมวด 5 วินัย การพัฒนาตนเอง และทีมเวิร์ก (10)', [['5.1', 'ตรงต่อเวลา และส่งคอนเทนต์ผลงาน', 5], ['5.2', 'อัปเดตเทรนด์และช่วยเป็นพี่เลี้ยงสอนน้อง', 5]]]]},
+};
+const kpiType = level => LEVELS.indexOf(level) < 3 ? 'assistant' : 'stylist';
+const salesScore = (t, a) => t > 0 ? Math.min(30, Math.round(num(a) / t * 300) / 10) : 0;
+// มีสิทธิ์สอบเลื่อนขั้น = คะแนน >= 75 (เกรด B ขึ้นไป) ติดต่อกัน 3 เดือนล่าสุด
+const eligible = rows => {
+  const ms = [...new Set(rows.map(r => r.month))].sort().slice(-3);
+  if (ms.length < 3) return false;
+  const idx = m => { const [y, mo] = m.split('-'); return y * 12 + Number(mo); };
+  return idx(ms[2]) - idx(ms[0]) === 2 && ms.every(m => num(rows.find(r => r.month === m).total) >= 75);
+};
+const gradeOf = (d, t) => [...d.grades].sort((a, b) => num(b.minScore) - num(a.minScore)).find(g => t >= num(g.minScore));
+const num = v => Number(v) || 0;
+const today = () => new Date().toISOString().slice(0, 10);
+const hasQuiz = (d, tid) => d.questions.some(q => q.trainingId === tid);
+// ผ่านหัวข้อ = สอบข้อเขียนผ่าน (ถ้ามีข้อสอบ) และคะแนนประเมินงานปฏิบัติเฉลี่ย 7+ (ถ้าหัวข้อต้องมีงานปฏิบัติ)
+const passed = (d, code, tid) => {
+  const t = d.trainings.find(x => x.id === tid);
+  const quizOk = !hasQuiz(d, tid) || d.quizResults.some(r => r.empCode === code && r.trainingId === tid && r.passed === 'TRUE');
+  const v = d.evaluations.filter(x => x.empCode === code && x.trainingId === tid);
+  return quizOk && (t?.practical === 'FALSE' || (v.length > 0 && v.reduce((s, x) => s + num(x.score), 0) / v.length >= 7));
+};
+const unlocked = (d, code, t) => { if (!t.courseId) return true; const ts = d.trainings.filter(x => x.courseId === t.courseId), i = ts.findIndex(x => x.id === t.id); return i <= 0 || passed(d, code, ts[i - 1].id); };
+const eomStr = () => { const n = new Date(), e = new Date(n.getFullYear(), n.getMonth() + 1, 0); return e.getFullYear() + '-' + String(e.getMonth() + 1).padStart(2, '0') + '-' + String(e.getDate()).padStart(2, '0'); };
+const daysLeft = d => d ? Math.ceil((new Date(d) - new Date().setHours(0, 0, 0, 0)) / 864e5) : null;
+const empty = {employees: [], trainings: [], progress: [], submissions: [], evaluations: [], levelHistory: [], goals: [], courses: [], levels: [], grades: [], skills: [], skillStatus: [], kpi: [], questions: [], quizResults: []};
+
+function Img({src, alt, cls}) {
+  const [bad, setBad] = useState(!src);
+  useEffect(() => setBad(!src), [src]);
+  return bad ? <div className={'ph ' + cls} role="img" aria-label={alt}></div>
+    : <img className={cls} src={src} alt={alt} loading="lazy" onError={() => setBad(true)} />;
+}
+const Bar = ({v}) => <div className="bar"><i style={{width: Math.min(100, num(v)) + '%'}} /><span>{num(v)}%</span></div>;
+const Empty = ({t}) => <p className="mut">{t}</p>;
+
+function Login({onLogin}) {
+  const [c, setC] = useState(''), [e, setE] = useState(''), [b, setB] = useState(false);
+  const go = async ev => {
+    ev.preventDefault();
+    if (!c.trim()) return setE('กรุณากรอกรหัสพนักงาน');
+    setB(true); setE('');
+    try { await onLogin(c.trim()); } catch (x) { setE(x.message); }
+    setB(false);
+  };
+  return <div className="login"><form className="card" onSubmit={go}>
+    <h1> Salon Training</h1><p className="mut">เข้าสู่ระบบด้วยรหัสพนักงาน</p>
+    <input placeholder="รหัสพนักงาน" value={c} onChange={x => setC(x.target.value)} autoFocus />
+    <button className="btn" disabled={b}>{b ? 'กำลังเข้าสู่ระบบ…' : 'เข้าสู่ระบบ'}</button>
+    {e && <p className="err" role="alert">{e}</p>}
+  </form></div>;
+}
+
+function Profile({d, code, user, act}) {
+  const e = d.employees.find(x => x.code === code);
+  if (!e) return <Empty t="ไม่พบข้อมูลพนักงาน" />;
+  const mgr = user.role !== 'staff';
+  const full = user.role !== 'staff' || code === user.code;
+  const pr = d.progress.filter(x => x.empCode === code), ev = d.evaluations.filter(x => x.empCode === code);
+  const lh = d.levelHistory.filter(x => x.empCode === code);
+  const works = d.submissions.filter(x => x.empCode === code && x.imageUrl);
+  const avgN = ev.length ? ev.reduce((s, x) => s + num(x.score), 0) / ev.length : null, avg = avgN === null ? '-' : avgN.toFixed(1);
+  const lv = d.levels.find(l => l.level === e.level);
+  const gp = [1, 2, 3].filter(g => { const ss = d.skills.filter(s => s.gate === String(g)); return ss.length && ss.every(s => d.skillStatus.some(x => x.empCode === code && x.skillId === s.id && x.status === 'ผ่าน')); }).length;
+  const tp = d.trainings.filter(t => (t.practical !== 'FALSE' || hasQuiz(d, t.id)) && passed(d, code, t.id)).length;
+  const tn = id => d.trainings.find(t => t.id === id)?.name || '(รายการถูกลบ)';
+  return <>
+    <div className="card prof hero">
+      <Img cls="avatar" src={e.photoUrl} alt={e.name} />
+      <div><h2>{e.name}</h2>
+        <div>{e.position || '-'} <span className="tag">{e.level || '-'}</span></div>
+        <div className="mut">รหัส {e.code} · เริ่มงาน {e.startDate || '-'}</div>
+        {mgr && <div>เปอร์เซ็นต์รายได้ปัจจุบัน {e.incomePercent || '-'}%</div>}
+        {mgr && lv?.salaryRange && <div className="mut">ฐานเงินเดือนตำแหน่ง {lv.salaryRange} บาท{lv.salesRange && lv.salesRange !== '-' ? ' · เป้ายอดขาย ' + lv.salesRange + ' บาท/เดือน' : ''}</div>}
+        <div> คะแนนเฉลี่ย {avg}</div></div>
+    </div>
+    {full && <div className="stats">
+      <div className="stat"><b>{avg}</b><span>คะแนนเฉลี่ยประเมิน</span></div>
+      <div className="stat"><b>{tp}</b><span>หัวข้อที่ผ่านแล้ว</span></div>
+      <div className="stat"><b>{gp}/3</b><span>ด่านทักษะที่ผ่าน</span></div>
+      <div className="stat"><b>{pr.length ? Math.round(pr.reduce((s, x) => s + num(x.progress), 0) / pr.length) : 0}%</b><span>ความคืบหน้าเฉลี่ย</span></div></div>}
+    {full && <>
+      <div className="card"><h3> ประวัติการฝึก</h3>
+        {pr.length ? pr.map(p => <div key={p.id} style={{margin: '8px 0'}}>
+          <div className="row"><span>{tn(p.trainingId)}</span><span className="mut">กำหนดประเมิน {p.dueDate || '-'}</span></div>
+          <Bar v={p.progress} /></div>) : <Empty t="ยังไม่มีบันทึกการฝึก" />}</div>
+      <Courses d={d} code={code} />
+      <Skills d={d} code={code} user={user} act={act} />
+      <Kpi d={d} code={code} />
+      <Goals d={d} code={code} user={user} act={act} />
+      <div className="card"><h3> ผลประเมิน</h3>
+        {ev.length ? ev.map(x => <div key={x.id} className="row"><div>
+          <b>{x.score}/10</b> <span className={'tag ' + (x.result === 'ผ่าน' ? 'ok' : '')}>{x.result}</span>
+          <div className="mut">{d.trainings.find(t => t.id === x.trainingId)?.name} · โดย {x.evaluator}</div>{x.strengths && <div>จุดดี: {x.strengths}</div>}{x.comment && <div>{x.comment}</div>}{x.improve && <div className="mut">ปรับปรุง: {x.improve}</div>}</div>
+          <span className="mut">{x.date}</span></div>) : <Empty t="ยังไม่มีผลประเมิน" />}</div>
+      <div className="card"><h3> ประวัติการปรับระดับ</h3>
+        {lh.length ? lh.map(x => <div key={x.id} className="row"><span>{x.fromLevel} → {x.toLevel}</span><span className="mut">{x.date}</span></div>)
+          : <Empty t="ยังไม่มีการปรับระดับ" />}</div></>}
+    <div className="card"><h3> ผลงาน</h3>
+      {works.length ? <div className="grid">{works.map(w => <Img key={w.id} cls="work" src={w.imageUrl} alt="ผลงาน" />)}</div> : <Empty t="ยังไม่มีผลงาน" />}</div>
+  </>;
+}
+
+function Courses({d, code}) {
+  const e = d.employees.find(x => x.code === code);
+  const list = d.courses.filter(c => !c.level || c.level === e?.level);
+  const pct = c => {
+    const ts = d.trainings.filter(t => t.courseId === c.id);
+    if (!ts.length) return 0;
+    return Math.round(ts.reduce((s, t) => s + num(d.progress.find(p => p.empCode === code && p.trainingId === t.id)?.progress), 0) / ts.length);
+  };
+  return <div className="card"><h3>คอร์สหลักที่ต้องเรียน</h3>
+    {list.length ? list.map(c => <div key={c.id} style={{margin: '8px 0'}}>
+      <div className="row"><span>{c.name}</span><span className="mut">{d.trainings.filter(t => t.courseId === c.id).length} หัวข้อ</span></div><Bar v={pct(c)} />{c.passCriteria && <div className="mut">เกณฑ์ผ่าน: {c.passCriteria} · ประเมิน{c.evalRule}</div>}</div>)
+      : <Empty t="ยังไม่ได้กำหนดคอร์สหลัก" />}</div>;
+}
+
+function Skills({d, code, user, act}) {
+  if (!d.skills.length) return null;
+  const admin = user.role !== 'staff';
+  const row = id => d.skillStatus.find(x => x.empCode === code && x.skillId === id) || {};
+  const st = id => row(id).status || 'ยังไม่ผ่าน';
+  const base = (s, patch) => ({id: code + '_' + s.id, empCode: code, skillId: s.id, status: st(s.id), note: row(s.id).note || '', passDate: row(s.id).passDate || '', ...patch});
+  const save = (s, patch) => act(() => api('save', {sheet: 'SkillStatus', row: base(s, patch)}));
+  const names = ['Trainee → Assistant', 'Assistant → Senior Assistant', 'Senior Assistant → Junior Stylist'];
+  return <div className="card"><h3>เช็กลิสต์ทักษะภาคปฏิบัติเพื่อเลื่อนขั้น</h3>
+    {[1, 2, 3].map(g => {
+      const ss = d.skills.filter(s => s.gate === String(g)), ok = ss.filter(s => st(s.id) === 'ผ่าน').length, pass = ss.length > 0 && ok === ss.length;
+      return <div key={g} style={{margin: '12px 0'}}>
+        <div className="row"><b>ด่าน {g}: {names[g - 1]} ({ok}/{ss.length} ข้อ)</b><span className={'tag ' + (pass ? 'ok' : '')}>{pass ? 'ผ่านด่าน' : 'ยังไม่ผ่านด่าน'}</span></div>
+        <Bar v={ss.length ? Math.round(ok / ss.length * 100) : 0} />
+        {admin && !pass && <p><button className="btn sec" onClick={() => confirm('ทำเครื่องหมายผ่านทุกข้อในด่านนี้ ? (สำหรับคนที่ผ่านมาก่อนเริ่มใช้ระบบ)') && act(async () => { for (const s of ss) if (st(s.id) !== 'ผ่าน') await api('save', {sheet: 'SkillStatus', row: base(s, {status: 'ผ่าน'})}); }, 'บันทึกแล้ว')}>ผ่านทั้งด่าน</button></p>}
+        {ss.map(s => <div key={s.id} style={{margin: '8px 0'}}>
+          <div className="row"><div><b>{s.name}</b><div className="mut">{s.criteria}</div></div>
+            {admin ? <select style={{width: 'auto', margin: 0}} value={st(s.id)} onChange={e => save(s, {status: e.target.value})}>{STATUS.map(x => <option key={x}>{x}</option>)}</select>
+              : <span className={'tag ' + (st(s.id) === 'ผ่าน' ? 'ok' : '')}>{st(s.id)}</span>}</div>
+          {row(s.id).passDate && <div className="mut">ผ่านเมื่อ {row(s.id).passDate}</div>}
+          {admin ? <input key={s.id + (row(s.id).note || '')} defaultValue={row(s.id).note || ''} placeholder="บันทึกผลการตรวจงาน / ข้อเสนอแนะ" onBlur={e => e.target.value !== (row(s.id).note || '') && save(s, {note: e.target.value})} />
+            : row(s.id).note && <div className="mut">บันทึก: {row(s.id).note}</div>}</div>)}</div>;
+    })}</div>;
+}
+
+function Kpi({d, code}) {
+  const rows = d.kpi.filter(r => r.empCode === code).sort((a, b) => b.month.localeCompare(a.month));
+  return <div className="card"><h3>KPI รายเดือน</h3>
+    {rows.length ? <>
+      <p><span className={'tag ' + (eligible(rows) ? 'ok' : '')}>{eligible(rows) ? 'มีสิทธิ์สอบเลื่อนขั้น (คะแนน 75+ ครบ 3 เดือนติดกัน)' : 'ยังไม่มีสิทธิ์สอบเลื่อนขั้น'}</span></p>
+      {rows.map(r => <div key={r.id} className="row"><div><b>{r.month}</b> · {r.total}/100 <span className={'tag ' + (num(r.total) >= 75 ? 'ok' : '')}>เกรด {r.grade}</span>
+        <div className="mut">{d.grades.find(g => g.grade === r.grade)?.benefits}</div>{r.note && <div className="mut">{r.note}</div>}</div></div>)}</>
+      : <Empty t="ยังไม่มีผล KPI" />}</div>;
+}
+
+function KpiForm({d, act}) {
+  const [code, setCode] = useState(d.employees[0]?.code || ''), [month, setMonth] = useState(today().slice(0, 7));
+  const [sc, setSc] = useState({}), [tg, setTg] = useState(''), [ac, setAc] = useState(''), [note, setNote] = useState('');
+  const e = d.employees.find(x => x.code === code), type = kpiType(e?.level), spec = KPI_SPEC[type], items = spec.groups.flatMap(g => g[1]);
+  const auto = k => type === 'stylist' && k === '1.1';
+  const val = k => auto(k) ? salesScore(num(tg), ac) : num(sc[k]);
+  const total = Math.round(items.reduce((s, [k]) => s + val(k), 0) * 10) / 10, gr = gradeOf(d, total);
+  const go = ev => {
+    ev.preventDefault();
+    if (!e) return alert('กรุณาเลือกพนักงาน');
+    if (items.some(([k, , max]) => val(k) < 0 || val(k) > max)) return alert('คะแนนต้องอยู่ระหว่าง 0 ถึงคะแนนเต็มของแต่ละข้อ');
+    if (type === 'stylist' && !(num(tg) > 0)) return alert('กรุณากรอกเป้ายอดขาย');
+    act(() => api('save', {sheet: 'KPI', row: {id: code + '_' + month + '_' + type, empCode: code, month, type, scores: JSON.stringify(sc), salesTarget: tg, salesActual: ac, note}}), 'บันทึก KPI แล้ว');
+  };
+  return <form className="card" onSubmit={go}><h3>ประเมิน KPI รายเดือน</h3>
+    <label>พนักงาน</label><EmpSelect d={d} v={code} on={ev => setCode(ev.target.value)} />
+    <label>เดือน</label><input type="month" value={month} onChange={ev => setMonth(ev.target.value)} />
+    <p className="mut">แบบประเมิน: {spec.name} (ตามระดับ {e?.level})</p>
+    {type === 'stylist' && <><label>เป้ายอดขายบริการ (บาท)</label><input type="number" value={tg} onChange={ev => setTg(ev.target.value)} />
+      <label>ยอดขายจริง (บาท)</label><input type="number" value={ac} onChange={ev => setAc(ev.target.value)} /></>}
+    {spec.groups.map(([title, its]) => <div key={title}><h3>{title}</h3>
+      {its.map(([k, n, max]) => auto(k)
+        ? <div key={k} className="row"><span>{k} {n} (เต็ม {max}) คำนวณอัตโนมัติ</span><b>{val(k)}</b></div>
+        : <div key={k}><label>{k} {n} (เต็ม {max})</label><input type="number" min="0" max={max} step="0.5" value={sc[k] ?? ''} onChange={ev => setSc({...sc, [k]: ev.target.value})} /></div>)}</div>)}
+    <p><b>คะแนนรวม {total}/100</b> {gr && <span className="tag">เกรด {gr.grade} · {gr.rating}</span>}</p>
+    {gr && <p className="mut">{gr.benefits} · {gr.promotion}</p>}
+    <label>ข้อเสนอแนะ/แผนพัฒนาเดือนถัดไป</label><textarea rows="3" value={note} onChange={ev => setNote(ev.target.value)} />
+    <button className="btn">บันทึก KPI</button></form>;
+}
+
+function Goals({d, code, user, act}) {
+  const can = user.role !== 'staff' || code === user.code, list = d.goals.filter(g => g.empCode === code);
+  const [f, setF] = useState({title: '', dueDate: '', mediaLink: ''}), [file, setFile] = useState(null);
+  const add = ev => {
+    ev.preventDefault();
+    if (!f.title.trim()) return alert('กรุณากรอกเป้าหมาย');
+    act(async () => {
+      const imageUrl = file ? await uploadFile(file) : '';
+      await api('save', {sheet: 'Goals', row: {...f, imageUrl, empCode: code, progress: 0}});
+      setF({title: '', dueDate: '', mediaLink: ''}); setFile(null);
+    }, 'บันทึกเป้าหมายแล้ว');
+  };
+  return <div className="card"><h3>เป้าหมาย</h3>
+    {list.length ? list.map(g => <div key={g.id} style={{margin: '10px 0'}}>
+      <div className="row"><span>{g.title}</span><span className="mut">ภายใน {g.dueDate || '-'}{can && <>
+        {' '}<button className="btn sec" onClick={() => act(() => api('save', {sheet: 'Goals', row: {...g, progress: Math.min(100, num(g.progress) + 10)}}))}>+10%</button>
+        {' '}<button className="btn sec" onClick={() => confirm('ลบเป้าหมายนี้ ?') && act(() => api('delete', {sheet: 'Goals', id: g.id}), 'ลบแล้ว')}>ลบ</button></>}</span></div>
+      {g.imageUrl && <div style={{maxWidth: 220, margin: '6px 0'}}><Img cls="work" src={g.imageUrl} alt="ภาพเป้าหมาย" /></div>}
+      {g.mediaLink && <div><a href={g.mediaLink} target="_blank" rel="noreferrer">เปิดวิดีโอ/ลิงก์อ้างอิง</a></div>}
+      <Bar v={g.progress} /></div>) : <Empty t="ยังไม่ได้ตั้งเป้าหมาย" />}
+    {can && <form onSubmit={add}>
+      <input placeholder="เป้าหมายใหม่" value={f.title} onChange={e => setF({...f, title: e.target.value})} />
+      <label>วันที่ตั้งใจทำให้สำเร็จ</label><input type="date" value={f.dueDate} onChange={e => setF({...f, dueDate: e.target.value})} />
+      <label>รูปสิ่งที่ตั้งใจจะทำ</label><input type="file" accept="image/*" onChange={e => setFile(e.target.files[0] || null)} />
+      <label>หรือลิงก์วิดีโอ/รูปอ้างอิง</label><input type="url" placeholder="https://" value={f.mediaLink} onChange={e => setF({...f, mediaLink: e.target.value})} />
+      <button className="btn">เพิ่มเป้าหมาย</button></form>}</div>;
+}
+
+function Path({d, level, showMoney}) {
+  const ci = LEVELS.indexOf(level);
+  return d.levels.length ? <div className="card"><h3>เส้นทางการเติบโต</h3><div className="steps">
+    {LEVELS.map((l, i) => {
+      const v = d.levels.find(x => x.level === l), detail = i === Math.max(ci, 0) || i === ci + 1;
+      return <div key={l} className={'step ' + (i < ci ? 'done' : i === ci ? 'cur' : '')}>
+        <b>{l}</b> {i === ci && <span className="tag">ระดับปัจจุบัน</span>}{i === ci + 1 && <span className="tag">ระดับถัดไป</span>}{i < ci && <span className="tag ok">ผ่านแล้ว</span>}
+        {v && detail && <><div className="mut">{v.line} · {v.description}</div>
+          {showMoney && <div className="mut">เงินเดือน {v.salaryRange} บาท{v.salesRange && v.salesRange !== '-' ? ' · เป้ายอดขาย ' + v.salesRange + ' บาท/เดือน' : ''}</div>}
+          <div className="mut">เกณฑ์: {v.criteria}</div></>}</div>;
+    })}</div></div> : null;
+}
+
+function Team({d, open}) {
+  return <div className="grid">{d.employees.map(e =>
+    <button key={e.code} className="card" style={{textAlign: 'center', cursor: 'pointer'}} onClick={() => open(e.code)}>
+      <Img cls="avatar" src={e.photoUrl} alt={e.name} /><div><b>{e.name}</b></div><div className="mut">{e.position} · {e.level}</div>
+    </button>)}</div>;
+}
+
+const TrainingSelect = ({d, v, on, ok}) => {
+  const all = d.trainings.filter(t => !ok || ok(t));
+  const groups = [...d.courses.map(c => [c.name, all.filter(t => t.courseId === c.id)]),
+    ['หัวข้ออื่นๆ', all.filter(t => !d.courses.some(c => c.id === t.courseId))]].filter(g => g[1].length);
+  return <select value={v} onChange={on}><option value="">— เลือกหัวข้อฝึก —</option>
+    {groups.map(([n, ts]) => <optgroup key={n} label={n}>{ts.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}</optgroup>)}</select>;
+};
+const EmpSelect = ({d, v, on}) => <select value={v} onChange={on}>{d.employees.map(e => <option key={e.code} value={e.code}>{e.name}</option>)}</select>;
+
+function PracticeForm({d, code, t, act}) {
+  const cur = d.progress.find(p => p.empCode === code && p.trainingId === t.id);
+  const [f, setF] = useState({progress: cur?.progress || 0, startDate: cur?.startDate || '', dueDate: cur?.dueDate || '', note: cur?.note || '', mediaLink: ''}), [file, setFile] = useState(null);
+  const s = k => ev => setF({...f, [k]: ev.target.value});
+  const go = ev => {
+    ev.preventDefault();
+    act(async () => {
+      await api('save', {sheet: 'Progress', row: {id: code + '_' + t.id, empCode: code, trainingId: t.id, progress: f.progress, startDate: f.startDate, dueDate: f.dueDate, note: f.note}});
+      if (file || f.mediaLink.trim()) {
+        const imageUrl = file ? await uploadFile(file) : '';
+        await api('save', {sheet: 'Submissions', row: {empCode: code, trainingId: t.id, imageUrl, mediaLink: f.mediaLink, note: f.note, date: today()}});
+        setFile(null); setF(x => ({...x, mediaLink: ''}));
+      }
+    }, 'บันทึกแล้ว');
+  };
+  return <form onSubmit={go} style={{padding: '8px 0 12px'}}>
+    <label>ความคืบหน้า {f.progress}%</label><input type="range" min="0" max="100" step="5" value={f.progress} onChange={s('progress')} />
+    <label>วันเริ่มฝึก</label><input type="date" value={f.startDate} onChange={s('startDate')} />
+    <label>วันกำหนดสอบ/ประเมิน</label><input type="date" value={f.dueDate} onChange={s('dueDate')} />
+    <label>หมายเหตุ</label><textarea rows="2" value={f.note} onChange={s('note')} />
+    <label>ส่งงานสอบ (ถ้าพร้อม): รูปผลงาน</label><input type="file" accept="image/*" onChange={e => setFile(e.target.files[0] || null)} />
+    <label>หรือลิงก์รูป/วิดีโอ</label><input type="url" placeholder="https://" value={f.mediaLink} onChange={s('mediaLink')} />
+    <button className="btn">บันทึก</button></form>;
+}
+
+function Slides({t}) {
+  const raw = t.content && t.content.trim() ? t.content : '# ' + t.name + '\n' + (t.description || '').split(/\s+/).filter(Boolean).map(x => '- ' + x).join('\n');
+  const slides = raw.split(/^---\s*$/m).map(x => x.trim()).filter(Boolean), [i, setI] = useState(0);
+  const n = Math.min(i, slides.length - 1), m = (t.materialLink || '').match(/docs\.google\.com\/presentation\/d\/([\w-]+)/);
+  return <div>
+    {m && <iframe className="frame" title="สไลด์" src={'https://docs.google.com/presentation/d/' + m[1] + '/embed'} allowFullScreen />}
+    {!m && t.materialLink && <p><a href={t.materialLink} target="_blank" rel="noreferrer">เปิดสื่อการเรียน (วิดีโอ/เอกสาร)</a></p>}
+    <div className="slide">{(slides[n] || '').split('\n').map((ln, k) => ln.startsWith('# ') ? <h3 key={k}>{ln.slice(2)}</h3>
+      : ln.startsWith('- ') ? <div key={k} className="li">{ln.slice(2)}</div>
+      : ln.startsWith('img:') ? <Img key={k} cls="" src={ln.slice(4).trim()} alt="ภาพประกอบ" /> : ln.trim() ? <p key={k}>{ln}</p> : null)}</div>
+    <div className="row"><button type="button" className="btn sec" disabled={n === 0} onClick={() => setI(n - 1)}>ก่อนหน้า</button>
+      <span className="mut">สไลด์ {n + 1}/{slides.length}</span>
+      <button type="button" className="btn" disabled={n >= slides.length - 1} onClick={() => setI(n + 1)}>ถัดไป</button></div></div>;
+}
+
+function Quiz({d, t, code, user, act}) {
+  const qs = d.questions.filter(q => q.trainingId === t.id);
+  const [ans, setAns] = useState({}), [res, setRes] = useState(null);
+  const done = d.quizResults.find(r => r.empCode === code && r.trainingId === t.id);
+  if (!qs.length) return <Empty t="หัวข้อนี้ยังไม่มีข้อสอบ" />;
+  if (code !== user.code) return <Empty t="ข้อสอบทำได้เฉพาะเจ้าของบัญชี" />;
+  const det = id => res?.detail.find(x => x.id === id);
+  const submit = () => {
+    if (qs.some(q => !ans[q.id])) return alert('กรุณาตอบให้ครบทุกข้อ');
+    act(async () => setRes(await api('quiz', {trainingId: t.id, answers: ans})));
+  };
+  return <div>
+    {done && <p><span className={'tag ' + (done.passed === 'TRUE' ? 'ok' : '')}>ผลที่บันทึกไว้: {done.score}/{done.total} · {done.passed === 'TRUE' ? 'ผ่าน' : 'ยังไม่ผ่าน'}</span></p>}
+    <p className="mut">ผ่านเมื่อตอบถูกอย่างน้อย 70% ทำซ้ำได้</p>
+    {qs.map((q, n) => <div key={q.id} className="card" style={{margin: '8px 0'}}><b>{n + 1}. {q.question}</b>
+      {['a', 'b', 'c', 'd'].filter(k => q[k]).map(k => <label key={k} className="opt"><input type="radio" name={q.id} checked={ans[q.id] === k} disabled={!!res} onChange={() => setAns({...ans, [q.id]: k})} /><span>{q[k]}</span></label>)}
+      {det(q.id) && <div className={det(q.id).ok ? 'mut' : 'err'}>{det(q.id).ok ? 'ถูกต้อง' : 'ยังไม่ถูก'}{det(q.id).explanation ? ' · ' + det(q.id).explanation : ''}</div>}</div>)}
+    {res ? <><p><b>ได้ {res.score}/{res.total}</b> <span className={'tag ' + (res.passed ? 'ok' : '')}>{res.passed ? 'ผ่าน' : 'ยังไม่ผ่าน ลองทบทวนบทเรียนแล้วทำใหม่'}</span></p>
+      <button className="btn sec" onClick={() => { setRes(null); setAns({}); }}>ทำอีกครั้ง</button></>
+      : <button className="btn" onClick={submit}>ส่งข้อสอบ</button>}</div>;
+}
+
+function TopicPanel({d, code, t, act, user}) {
+  const [tab, setTab] = useState('read');
+  const nq = d.questions.filter(q => q.trainingId === t.id).length;
+  return <div style={{padding: '8px 0 12px'}}>
+    <div className="tabs">{[['read', 'บทเรียน'], ...(nq ? [['quiz', 'ข้อสอบ (' + nq + ' ข้อ)']] : []), ['work', 'งานปฏิบัติ']].map(([k, l]) =>
+      <button key={k} type="button" className={'btn ' + (tab === k ? '' : 'sec')} onClick={() => setTab(k)}>{l}</button>)}</div>
+    {tab === 'read' && <Slides t={t} />}
+    {tab === 'quiz' && <Quiz d={d} t={t} code={code} user={user} act={act} />}
+    {tab === 'work' && <PracticeForm d={d} code={code} t={t} act={act} />}</div>;
+}
+
+function LearnPage({d, user, act}) {
+  const mgr = user.role !== 'staff';
+  const [code, setCode] = useState(user.code), [open, setOpen] = useState(null);
+  const e = d.employees.find(x => x.code === code);
+  const courses = d.courses.filter(c => !c.level || c.level === e?.level);
+  const other = d.trainings.filter(t => !d.courses.some(c => c.id === t.courseId));
+  const state = t => !unlocked(d, code, t) ? 'ล็อก' : passed(d, code, t.id) ? 'ผ่านแล้ว'
+    : d.submissions.some(s => s.empCode === code && s.trainingId === t.id && !d.evaluations.some(v => v.submissionId === s.id)) ? 'รอผลสอบ' : 'กำลังเรียน';
+  const block = (key, title, ts, sub) => <div className="card" key={key}><h3>{title}</h3>{sub && <p className="mut">{sub}</p>}
+    {ts.length ? ts.map((t, i) => { const st = state(t); return <div key={t.id}>
+      <div className="row"><div>{i + 1}. {t.name}<div className="mut">{t.description}</div></div>
+        <span><span className={'tag ' + (st === 'ผ่านแล้ว' ? 'ok' : '')}>{st}</span>{st !== 'ล็อก' && <> <button className="btn sec" onClick={() => setOpen(open === t.id ? null : t.id)}>{open === t.id ? 'ปิด' : 'เปิด'}</button></>}</span></div>
+      {open === t.id && <TopicPanel key={code + t.id} d={d} code={code} t={t} act={act} user={user} />}</div>; }) : <Empty t="ยังไม่มีหัวข้อ" />}</div>;
+  return <>
+    {mgr && <div className="card"><label>พนักงาน</label><EmpSelect d={d} v={code} on={ev => { setCode(ev.target.value); setOpen(null); }} /></div>}
+    {courses.map(c => block(c.id, c.name, d.trainings.filter(t => t.courseId === c.id), 'เรียนทีละหัวข้อ ส่งงานสอบ และสอบผ่าน (คะแนนเฉลี่ย 7 ขึ้นไป) จึงเปิดหัวข้อถัดไป' + (c.passCriteria ? ' · เกณฑ์ผ่าน: ' + c.passCriteria : '')))}
+    {other.length > 0 && block('other', 'หัวข้ออื่นๆ', other)}
+    {!courses.length && !other.length && <Empty t="ยังไม่มีคอร์สสำหรับระดับของคุณ" />}</>;
+}
+
+function SubmitPage({d, act, user}) {
+  const blank = {trainingId: '', mediaLink: '', note: ''};
+  const [f, setF] = useState(blank), [file, setFile] = useState(null);
+  const s = k => e => setF({...f, [k]: e.target.value});
+  const go = ev => {
+    ev.preventDefault();
+    if (!f.trainingId) return alert('กรุณาเลือกรายการฝึก');
+    if (!file && !f.mediaLink.trim()) return alert('กรุณาแนบรูปหรือใส่ลิงก์รูป/วิดีโอ');
+    act(async () => {
+      const imageUrl = file ? await uploadFile(file) : '';
+      await api('save', {sheet: 'Submissions', row: {...f, imageUrl, date: today()}});
+      setF(blank); setFile(null);
+    }, 'ส่งงานประเมินแล้ว');
+  };
+  return <form className="card" onSubmit={go}><h3>ส่งงานประเมิน</h3>
+    <label>รายการฝึก</label><TrainingSelect d={d} v={f.trainingId} on={s('trainingId')} ok={t => user.role !== 'staff' || unlocked(d, user.code, t)} />
+    <label>รูปผลงาน</label><input type="file" accept="image/*" onChange={e => setFile(e.target.files[0] || null)} />
+    <label>หรือลิงก์รูป/วิดีโอ</label><input type="url" placeholder="https://" value={f.mediaLink} onChange={s('mediaLink')} />
+    <label>หมายเหตุ</label><textarea rows="2" value={f.note} onChange={s('note')} />
+    <button className="btn">ส่งงาน</button></form>;
+}
+
+function EvalCard({s, d, act, user}) {
+  const [f, setF] = useState({score: 7, strengths: '', comment: '', improve: '', newLevel: ''});
+  const e = d.employees.find(x => x.code === s.empCode);
+  const k = key => ev => setF({...f, [key]: ev.target.value});
+  const go = () => {
+    const sc = num(f.score);
+    if (sc < 1 || sc > 10) return alert('คะแนนต้องอยู่ระหว่าง 1–10');
+    if (!f.strengths.trim() || !f.improve.trim()) return alert('กรุณาระบุจุดดีและจุดที่ต้องปรับปรุง');
+    act(async () => {
+      await api('save', {sheet: 'Evaluations', row: {submissionId: s.id, score: sc, strengths: f.strengths, comment: f.comment, improve: f.improve, date: today()}});
+      if (user.role === 'admin' && f.newLevel && e && f.newLevel !== e.level) {
+        await api('save', {sheet: 'LevelHistory', row: {empCode: e.code, fromLevel: e.level, toLevel: f.newLevel, date: today()}});
+        await api('save', {sheet: 'Employees', row: {...e, level: f.newLevel}});
+      }
+    }, 'บันทึกผลประเมินแล้ว');
+  };
+  return <div className="card"><b>{e?.name || s.empCode}</b> <span className="mut">· {d.trainings.find(t => t.id === s.trainingId)?.name} · {s.date}</span>
+    {s.imageUrl && <Img cls="work" src={s.imageUrl} alt="งานที่ส่ง" />}
+    {s.mediaLink && <div><a href={s.mediaLink} target="_blank" rel="noreferrer">เปิดลิงก์อ้างอิง</a></div>}
+    {s.note && <p className="mut">{s.note}</p>}
+    <label>คะแนน (1–10) ตั้งแต่ 7 ถือว่าผ่าน</label><input type="number" min="1" max="10" value={f.score} onChange={k('score')} />
+    <label>จุดดี (จำเป็น)</label><textarea rows="2" value={f.strengths} onChange={k('strengths')} />
+    <label>จุดที่ต้องปรับปรุง (จำเป็น)</label><textarea rows="2" value={f.improve} onChange={k('improve')} />
+    <label>ความคิดเห็นเพิ่มเติม</label><textarea rows="2" value={f.comment} onChange={k('comment')} />
+    {user.role === 'admin' && <><label>ปรับระดับ (ถ้ามี)</label><select value={f.newLevel} onChange={k('newLevel')}><option value="">ไม่ปรับ</option>{LEVELS.map(l => <option key={l}>{l}</option>)}</select></>}
+    <button className="btn" onClick={go}>บันทึกผลประเมิน</button></div>;
+}
+function EvalPage({d, act, user}) {
+  const mine = new Set(d.evaluations.filter(x => x.evaluatorCode === user.code).map(x => x.submissionId));
+  const todo = d.submissions.filter(s => s.empCode !== user.code && !mine.has(s.id));
+  return todo.length ? todo.map(s => <EvalCard key={s.id} s={s} d={d} act={act} user={user} />) : <Empty t="ไม่มีงานรอประเมิน" />;
+}
+
+function Calendar({d, user}) {
+  const items = d.progress.filter(p => p.dueDate).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+  return <div className="card"><h3> วันประเมิน</h3>
+    <div className="row"><div><b>{eomStr()}</b><div>ประเมินประจำเดือน (ทุกสิ้นเดือน)</div></div><span className="tag">อีก {daysLeft(eomStr())} วัน</span></div>
+    {items.length ? items.map(p => {
+      const n = daysLeft(p.dueDate), e = d.employees.find(x => x.code === p.empCode);
+      return <div key={p.id} className="row"><div><b>{p.dueDate}</b><div>{user.role !== 'staff' && (e?.name || p.empCode) + ' · '}{d.trainings.find(t => t.id === p.trainingId)?.name}</div></div>
+        <span className="tag">{n < 0 ? 'เลยกำหนด' : n === 0 ? 'วันนี้' : 'อีก ' + n + ' วัน'}</span></div>;
+    }) : <Empty t="ยังไม่มีวันกำหนดประเมิน" />}</div>;
+}
+
+function Gallery({d, user}) {
+  const w = d.submissions.filter(s => s.imageUrl && (user.role !== 'staff' || s.empCode === user.code));
+  return w.length ? <div className="grid">{w.map(s => <div key={s.id}>
+    <Img cls="work" src={s.imageUrl} alt="ผลงาน" /><div className="mut">{d.employees.find(e => e.code === s.empCode)?.name}</div></div>)}</div>
+    : <Empty t="ยังไม่มีผลงาน" />;
+}
+
+function EmpForm({init, act, done}) {
+  const [f, setF] = useState(init), [file, setFile] = useState(null);
+  const s = k => e => setF({...f, [k]: e.target.value});
+  const go = ev => {
+    ev.preventDefault();
+    if (!f.code.trim() || !f.name.trim()) return alert('กรุณากรอกรหัสและชื่อ');
+    act(async () => {
+      const photoUrl = file ? await uploadFile(file) : f.photoUrl;
+      await api('save', {sheet: 'Employees', row: {...f, code: f.code.trim(), photoUrl, active: 'TRUE'}});
+      done();
+    }, 'บันทึกพนักงานแล้ว');
+  };
+  return <form className="card" onSubmit={go}>
+    <label>รหัสพนักงาน</label><input value={f.code} disabled={!!init.code} onChange={s('code')} />
+    <label>ชื่อ</label><input value={f.name} onChange={s('name')} />
+    <label>ตำแหน่ง</label><input value={f.position} onChange={s('position')} />
+    <label>ระดับ</label><select value={f.level} onChange={s('level')}>{LEVELS.map(l => <option key={l}>{l}</option>)}</select>
+    <label>วันเริ่มงาน</label><input type="date" value={f.startDate} onChange={s('startDate')} />
+    <label>เปอร์เซ็นต์รายได้</label><input type="number" min="0" max="100" value={f.incomePercent} onChange={s('incomePercent')} />
+    <label>สิทธิ์</label><select value={f.role} onChange={s('role')}><option value="staff">พนักงาน</option><option value="manager">ผู้จัดการ</option><option value="admin">เจ้าของร้าน</option></select>
+    <label>รูปพนักงาน</label><input type="file" accept="image/*" onChange={e => setFile(e.target.files[0] || null)} />
+    <button className="btn">บันทึก</button> <button type="button" className="btn sec" onClick={done}>ยกเลิก</button></form>;
+}
+
+function LessonEditor({d, t, act}) {
+  const [f, setF] = useState({content: t.content || '', materialLink: t.materialLink || '', practical: t.practical !== 'FALSE'});
+  const [q, setQ] = useState({question: '', a: '', b: '', c: '', d: '', answer: 'a', explanation: ''});
+  const qs = d.questions.filter(x => x.trainingId === t.id);
+  const addQ = () => {
+    if (!q.question.trim() || [q.a, q.b, q.c, q.d].filter(x => x.trim()).length < 2) return alert('กรุณากรอกคำถามและตัวเลือกอย่างน้อย 2 ข้อ');
+    if (!q[q.answer].trim()) return alert('ข้อที่เลือกเป็นเฉลยยังว่างอยู่');
+    act(async () => { await api('save', {sheet: 'Questions', row: {...q, trainingId: t.id}}); setQ({question: '', a: '', b: '', c: '', d: '', answer: 'a', explanation: ''}); }, 'เพิ่มข้อสอบแล้ว');
+  };
+  return <div className="card">
+    <label>เนื้อหาบทเรียน: ขึ้นสไลด์ใหม่ด้วยบรรทัด ---  หัวข้อขึ้นต้นด้วย #  รายการขึ้นต้นด้วย -  รูปขึ้นต้นด้วย img:ลิงก์</label>
+    <textarea rows="9" value={f.content} onChange={e => setF({...f, content: e.target.value})} />
+    <label>ลิงก์ Google Slides (แชร์แบบ Anyone with the link) หรือวิดีโอ/เอกสาร</label>
+    <input type="url" placeholder="https://" value={f.materialLink} onChange={e => setF({...f, materialLink: e.target.value})} />
+    <label className="opt"><input type="checkbox" checked={f.practical} onChange={e => setF({...f, practical: e.target.checked})} /><span>ต้องส่งงานปฏิบัติและได้คะแนนประเมินเฉลี่ย 7+ จึงผ่านหัวข้อ (ปิดได้ถ้าเป็นหัวข้อทฤษฎีที่ใช้ข้อสอบอย่างเดียว)</span></label>
+    <button className="btn" onClick={() => act(() => api('save', {sheet: 'Trainings', row: {...t, content: f.content, materialLink: f.materialLink, practical: f.practical ? 'TRUE' : 'FALSE'}}), 'บันทึกบทเรียนแล้ว')}>บันทึกบทเรียน</button>
+    <h3 style={{marginTop: 16}}>ข้อสอบ ({qs.length} ข้อ)</h3>
+    {qs.map((x, n) => <div key={x.id} className="row"><span>{n + 1}. {x.question} <span className="mut">เฉลย {x.answer}</span></span>
+      <button className="btn sec" onClick={() => confirm('ลบข้อสอบนี้ ?') && act(() => api('delete', {sheet: 'Questions', id: x.id}), 'ลบแล้ว')}>ลบ</button></div>)}
+    <input placeholder="คำถาม" value={q.question} onChange={e => setQ({...q, question: e.target.value})} />
+    {['a', 'b', 'c', 'd'].map(k => <input key={k} placeholder={'ตัวเลือก ' + k.toUpperCase()} value={q[k]} onChange={e => setQ({...q, [k]: e.target.value})} />)}
+    <label>ข้อที่เป็นเฉลย</label><select value={q.answer} onChange={e => setQ({...q, answer: e.target.value})}>{['a', 'b', 'c', 'd'].map(k => <option key={k} value={k}>{k.toUpperCase()}</option>)}</select>
+    <input placeholder="คำอธิบายเฉลย (ไม่บังคับ)" value={q.explanation} onChange={e => setQ({...q, explanation: e.target.value})} />
+    <button className="btn sec" onClick={addQ}>เพิ่มข้อสอบ</button></div>;
+}
+
+function Admin({d, act, user}) {
+  const owner = user.role === 'admin';
+  const [tab, setTab] = useState(owner ? 'emp' : 'kpi'), [edit, setEdit] = useState(null), [t, setT] = useState({name: '', description: '', courseId: '', materialLink: ''}), [c, setC] = useState({name: '', description: '', level: '', period: '', evalRule: 'ทุกสิ้นเดือน', passCriteria: ''});
+  const [ed, setEd] = useState(null);
+  const blank = {code: '', name: '', position: '', level: LEVELS[0], photoUrl: '', startDate: '', incomePercent: '', role: 'staff'};
+  const del = (sheet, id, label) => confirm('ลบ ' + label + ' ?') && act(() => api('delete', {sheet, id}), 'ลบแล้ว');
+  return <>
+    <div className="tabs">{[['emp', 'พนักงาน'], ['kpi', 'KPI รายเดือน'], ['co', 'คอร์สหลัก'], ['tr', 'หัวข้อฝึก'], ['rep', 'รายงาน']].filter(([k]) => owner || k === 'kpi' || k === 'rep').map(([k, l]) =>
+      <button key={k} className={'btn ' + (tab === k ? '' : 'sec')} onClick={() => setTab(k)}>{l}</button>)}</div>
+    {tab === 'emp' && (edit ? <EmpForm init={edit} act={act} done={() => setEdit(null)} /> : <div className="card">
+      <button className="btn" onClick={() => setEdit(blank)}> เพิ่มพนักงาน</button>
+      {d.employees.map(e => <div key={e.code} className="row"><span>{e.name} <span className="mut">({e.code})</span></span>
+        <span><button className="btn sec" onClick={() => setEdit(e)}>แก้ไข</button> <button className="btn sec" onClick={() => del('Employees', e.code, e.name)}>ลบ</button></span></div>)}</div>)}
+    {tab === 'kpi' && <KpiForm d={d} act={act} />}
+    {tab === 'co' && <div className="card">
+      <input placeholder="ชื่อคอร์สหลัก" value={c.name} onChange={e => setC({...c, name: e.target.value})} />
+      <input placeholder="รายละเอียด" value={c.description} onChange={e => setC({...c, description: e.target.value})} />
+      <input placeholder="ช่วงเวลา เช่น เดือนที่ 1–2" value={c.period} onChange={e => setC({...c, period: e.target.value})} />
+      <input placeholder="วันประเมิน" value={c.evalRule} onChange={e => setC({...c, evalRule: e.target.value})} />
+      <input placeholder="เกณฑ์ผ่าน" value={c.passCriteria} onChange={e => setC({...c, passCriteria: e.target.value})} />
+      <select value={c.level} onChange={e => setC({...c, level: e.target.value})}><option value="">ทุกระดับต้องเรียน</option>{LEVELS.map(l => <option key={l} value={l}>เฉพาะระดับ {l}</option>)}</select>
+      <button className="btn" onClick={() => c.name.trim() ? act(async () => { await api('save', {sheet: 'Courses', row: c}); setC({name: '', description: '', level: '', period: '', evalRule: 'ทุกสิ้นเดือน', passCriteria: ''}); }, 'เพิ่มคอร์สแล้ว') : alert('กรุณากรอกชื่อคอร์ส')}>เพิ่มคอร์สหลัก</button>
+      {d.courses.map(x => <div key={x.id} className="row"><span>{x.name} <span className="tag">{x.level || 'ทุกระดับ'}</span></span><button className="btn sec" onClick={() => del('Courses', x.id, x.name)}>ลบ</button></div>)}</div>}
+    {tab === 'tr' && <div className="card">
+      <select value={t.courseId} onChange={e => setT({...t, courseId: e.target.value})}><option value="">— คอร์สหลัก (ไม่ระบุ) —</option>{d.courses.map(x => <option key={x.id} value={x.id}>{x.name}</option>)}</select>
+      <input placeholder="ชื่อหัวข้อฝึก" value={t.name} onChange={e => setT({...t, name: e.target.value})} />
+      <input placeholder="รายละเอียด" value={t.description} onChange={e => setT({...t, description: e.target.value})} />
+      <input type="url" placeholder="ลิงก์สื่อการเรียน (วิดีโอ/เอกสาร)" value={t.materialLink} onChange={e => setT({...t, materialLink: e.target.value})} />
+      <button className="btn" onClick={() => t.name.trim() ? act(async () => { await api('save', {sheet: 'Trainings', row: t}); setT({name: '', description: '', courseId: '', materialLink: ''}); }, 'เพิ่มรายการแล้ว') : alert('กรุณากรอกชื่อรายการ')}> เพิ่มรายการฝึก</button>
+      {d.trainings.map(x => <div key={x.id}><div className="row"><span>{x.name} <span className="mut">{d.courses.find(c => c.id === x.courseId)?.name}</span></span>
+        <span><button className="btn sec" onClick={() => setEd(ed === x.id ? null : x.id)}>บทเรียน/ข้อสอบ</button> <button className="btn sec" onClick={() => del('Trainings', x.id, x.name)}>ลบ</button></span></div>
+        {ed === x.id && <LessonEditor d={d} t={x} act={act} />}</div>)}</div>}
+    {tab === 'rep' && <div className="card"><h3>รายงานผลการฝึก</h3>
+      {d.employees.map(e => {
+        const ev = d.evaluations.filter(x => x.empCode === e.code), pr = d.progress.filter(x => x.empCode === e.code);
+        const avg = ev.length ? (ev.reduce((s, x) => s + num(x.score), 0) / ev.length).toFixed(1) : '-';
+        const prog = pr.length ? Math.round(pr.reduce((s, x) => s + num(x.progress), 0) / pr.length) : 0;
+        return <div key={e.code} style={{margin: '8px 0'}}><div className="row"><span>{e.name}</span>
+          <span className="mut">คะแนนเฉลี่ย {avg} · ผ่าน {ev.filter(x => x.result === 'ผ่าน').length}/{ev.length}</span></div><Bar v={prog} /></div>;
+      })}</div>}
+  </>;
+}
+
+function App() {
+  const [user, setUser] = useState(() => { try { return JSON.parse(sessionStorage.getItem('user')); } catch { return null; } });
+  const [d, setD] = useState(null), [page, setPage] = useState('home'), [view, setView] = useState(null);
+  const [err, setErr] = useState(''), [busy, setBusy] = useState(false);
+  const logout = () => { sessionStorage.clear(); setUser(null); setD(null); setPage('home'); };
+  const load = useCallback(async silent => {
+    try { if (!silent) setErr(''); setD({...empty, ...await api('bootstrap')}); }
+    catch (e) { if (/เข้าสู่ระบบ/.test(e.message)) logout(); else if (!silent) setErr(e.message); }
+  }, []);
+  useEffect(() => { // ดึงข้อมูลใหม่อัตโนมัติทุก 30 วินาที ขณะเปิดหน้าจออยู่
+    if (!user) return;
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(true); }, 30000);
+    return () => clearInterval(t);
+  }, [user, load]);
+  const onLogin = async code => {
+    const r = await api('login', {code});
+    sessionStorage.setItem('tk', r.token); sessionStorage.setItem('user', JSON.stringify(r.user)); setUser(r.user);
+  };
+  const act = async (fn, ok) => {
+    setBusy(true);
+    try { await fn(); await load(); if (ok) alert(ok); } catch (e) { alert(e.message); }
+    setBusy(false);
+  };
+  if (!user) return <Login onLogin={onLogin} />;
+  const admin = user.role !== 'staff';
+  const nav = [['home', '', 'หน้าแรก'], ...(admin ? [['team', '', 'ทีม']] : []), ['progress', '', 'เรียน'], ['submit', '', 'ส่งงาน'], ['calendar', '', 'ปฏิทิน'], ['gallery', '', 'ผลงาน'],
+    ['eval', '', 'ประเมิน'], ...(admin ? [['admin', '', 'จัดการ']] : [])];
+  const go = p => { setPage(p); setView(null); };
+  let body;
+  if (!d) body = err ? <div className="card"><p className="err" role="alert">{err}</p><button className="btn" onClick={() => load()}>ลองใหม่</button></div> : <p>กำลังโหลดข้อมูล…</p>;
+  else if (view) body = <><button className="btn sec" onClick={() => setView(null)}>← กลับ</button><Profile d={d} code={view} user={user} act={act} /></>;
+  else body = {
+    home: <><Profile d={d} code={user.code} user={user} act={act} /><Path d={d} showMoney={user.role !== 'staff'} level={d.employees.find(e => e.code === user.code)?.level} /></>, team: <Team d={d} open={setView} />,
+    progress: <LearnPage d={d} user={user} act={act} />, submit: <SubmitPage d={d} act={act} user={user} />,
+    calendar: <Calendar d={d} user={user} />, gallery: <Gallery d={d} user={user} />,
+    eval: <EvalPage d={d} act={act} user={user} />, admin: admin && <Admin d={d} act={act} user={user} />,
+  }[page];
+  return <>
+    <header className="top"><b> Salon Training</b><span>{user.name} <button className="btn sec" onClick={logout}>ออก</button></span></header>
+    <nav aria-label="เมนู">{nav.map(([k, i, l]) => <button key={k} className={page === k && !view ? 'on' : ''} onClick={() => go(k)}>{l}</button>)}</nav>
+    <main>{err && d && <p className="err" role="alert">{err}</p>}{busy && <p className="mut">กำลังบันทึก…</p>}{body}</main>
+  </>;
+}
+
+
+function Root() {
+  const [ok, setOk] = useState(!!getGas());
+  if (!ok) return <div className="login"><form className="card" onSubmit={e => {
+    e.preventDefault(); const v = e.target.u.value.trim();
+    if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(v)) return alert('ลิงก์ไม่ถูกต้อง ต้องขึ้นต้นด้วย https://script.google.com และลงท้ายด้วย /exec');
+    localStorage.setItem('gas', v); setOk(true);
+  }}><h1>ตั้งค่าครั้งแรก</h1><p className="mut">วางลิงก์ Apps Script ที่ลงท้ายด้วย /exec</p>
+    <input name="u" placeholder="https://script.google.com/macros/s/.../exec" /><button className="btn">บันทึก</button></form></div>;
+  return <App />;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Root />);
+</script></body></html>
